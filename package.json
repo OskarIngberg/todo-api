@@ -1,0 +1,19 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "todo api for React Todo app",
+  "main": "index.js",
+  "author": "Oskar Ingberg",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.12"
+  }
+}
