@@ -14,5 +14,6 @@ module.exports = function(app) {
         .delete(todoList.delete_a_task)
 
     app.route('/user/:username/:password')
-        .get(users.getUser);
+        .get(users.getUser)
+        .post(users.createNewUser);
 };
