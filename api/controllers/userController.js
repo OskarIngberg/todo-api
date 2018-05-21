@@ -1,15 +1,15 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var passwordHash = require('password-hash');
 var User = mongoose.model('Users');
+var Cryptr = require('cryptr');
+var config = require('../config/config');
+var cryptrUser = new Cryptr(config.usersalt);
+var cryptrPass = new Cryptr(config.passwordsalt);
 
 exports.getUser = function(req, res) {
-    var hashUsername = passwordHash.generate(req.params.username);
-    var hashPassword = passwordHash.generate(req.params.password);
-
-    console.log(hashUsername);
-    console.log(hashPassword);
+    var hashUsername = cryptrUser.encrypt(req.params.username);
+    var hashPassword = cryptrPass.encrypt(req.params.password);
 
     User.find({
         username: hashUsername,
@@ -29,8 +29,8 @@ exports.getUser = function(req, res) {
 }
 
 exports.createNewUser = function(req, res) {
-    var hashUsername = passwordHash.generate(req.body.username);
-    var hashPassword = passwordHash.generate(req.body.password);
+    var hashUsername = cryptrUser.encrypt(req.body.username);
+    var hashPassword = cryptrPass.encrypt(req.body.password);
 
     var body = {
         username: hashUsername,

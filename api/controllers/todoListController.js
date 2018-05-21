@@ -2,9 +2,16 @@
 
 var mongoose = require('mongoose');
 var Task = mongoose.model('Tasks');
+var Cryptr = require('cryptr');
+var config = require('../config/config');
+var cryptrUser = new Cryptr(config.usersalt);
 
 exports.list_all_tasks = function(req, res) {
-    Task.find({}, function(error, task) {
+    console.log(req.params.user);
+    var user = cryptrUser.encrypt(req.params.user);
+    Task.find({
+        user: user
+    }, function(error, task) {
         if (error) {
             res.send(error);
         } else {
@@ -14,6 +21,8 @@ exports.list_all_tasks = function(req, res) {
 }
 
 exports.create_a_task = function(req, res) {
+    console.log('create body: ', req.body.user);
+    req.body.user = cryptrUser.encrypt(req.body.user);
     var new_task = new Task(req.body);
     new_task.save(function(error, task) {
         if (error) {
